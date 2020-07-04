@@ -1,0 +1,72 @@
+{
+  "id": "5efdd6c2bdfb0b0aa93ee6b1",
+  "idMemberCreator": "5ef800fd88d5fc50e1ac5ddf",
+  "data": {
+    "old": {
+      "idList": "5ef8016f329b6571d075b467"
+    },
+    "card": {
+      "idList": "5efdb69e112ea80b24d7b87a",
+      "id": "5efda2424df07a0b011a70fc",
+      "name": "\u30c6\u30b9\u30c8\uff01",
+      "idShort": 244,
+      "shortLink": "EDiU8duQ"
+    },
+    "board": {
+      "id": "5ef8016e2c46581a6c8430b5",
+      "name": "Sample",
+      "shortLink": "tV3vLRfy"
+    },
+    "listBefore": {
+      "id": "5ef8016f329b6571d075b467",
+      "name": "Doing\ud83d\udcdd"
+    },
+    "listAfter": {
+      "id": "5efdb69e112ea80b24d7b87a",
+      "name": "ToDo"
+    }
+  },
+  "type": "updateCard",
+  "date": "2020-07-02T12:44:50.520Z",
+  "limits": {},
+  "display": {
+    "translationKey": "action_move_card_from_list_to_list",
+    "entities": {
+      "card": {
+        "type": "card",
+        "idList": "5efdb69e112ea80b24d7b87a",
+        "id": "5efda2424df07a0b011a70fc",
+        "shortLink": "EDiU8duQ",
+        "text": "\u30c6\u30b9\u30c8\uff01"
+      },
+      "listBefore": {
+        "type": "list",
+        "id": "5ef8016f329b6571d075b467",
+        "text": "Doing\ud83d\udcdd"
+      },
+      "listAfter": {
+        "type": "list",
+        "id": "5efdb69e112ea80b24d7b87a",
+        "text": "ToDo"
+      },
+      "memberCreator": {
+        "type": "member",
+        "id": "5ef800fd88d5fc50e1ac5ddf",
+        "username": "k44103",
+        "text": "Kenko Yoshitomi"
+      }
+    }
+  },
+  "memberCreator": {
+    "id": "5ef800fd88d5fc50e1ac5ddf",
+    "username": "k44103",
+    "activityBlocked": false,
+    "avatarHash": null,
+    "avatarUrl": null,
+    "fullName": "k44103",
+    "idMemberReferrer": null,
+    "initials": "K",
+    "nonPublic": {},
+    "nonPublicAvailable": true
+  }
+}
