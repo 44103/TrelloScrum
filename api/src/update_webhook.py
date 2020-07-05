@@ -15,7 +15,8 @@ headers = {
 query = {
    'key': cert_keys["api_key"],
    'token': cert_keys["token"],
-      'callbackURL': 'https://vf40xkr307.execute-api.ap-northeast-1.amazonaws.com/prod'
+   'callbackURL': cert_keys["callback_url"],
+   'description': '自動打刻'
 }
 
 response = requests.request(
