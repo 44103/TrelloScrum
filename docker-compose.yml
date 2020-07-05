@@ -1,8 +1,22 @@
 version: '3'
 services:
   python3:
-    build: .
+    build: ./api/
     container_name: 'TrelloScrum'
     tty: true
     volumes:
-      - ./src:/workspace/src
+      - ./api/src:/workdir/api
+      - ./infrastructure/terraform/src:/workdir/lambda
+    working_dir: "/workdir/lambda"
+
+  terraform:
+    image: hashicorp/terraform:latest
+    container_name: terraform_env
+    volumes:
+      - ~/.aws:/root/.aws:ro
+      - ./infrastructure/terraform:/workdir
+    working_dir: "/workdir"
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
