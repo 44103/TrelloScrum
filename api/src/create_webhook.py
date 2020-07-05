@@ -15,7 +15,7 @@ headers = {
 query = {
    'key': cert_keys["api_key"],
    'token': cert_keys["token"],
-   'callbackURL': 'https://cuwadmnsbi.execute-api.ap-northeast-1.amazonaws.com/prod',
+   'callbackURL': cert_keys["callback_url"],
    'idModel': cert_keys["board_id"]
 }
 
