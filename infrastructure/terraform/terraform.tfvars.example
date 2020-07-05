@@ -1,0 +1,13 @@
+# リージョン
+region = "ap-northeast-1"
+
+# リソース名のPrefix
+prefix = "test"
+
+# リソース名のSuffix
+suffix = ""
+
+# Trello API
+trello_api_key  = ""
+trello_token    = ""
+trello_board_id = ""
