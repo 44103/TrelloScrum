@@ -15,15 +15,16 @@ RUN apt update \
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
+ENV TZ JST-9
 
 # 作業するディレクトリを変更
-WORKDIR /workspace
+WORKDIR /workdir/lambda
 
 COPY requirements.txt ${PWD}
 
 # pythonのパッケージをインストール
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt -t /workdir/lambda/
 
 # 作業するディレクトリを変更
 # コンテナの内部には入った際のディレクトリの位置を変更している
-WORKDIR /workspace/src
+WORKDIR /workdir/api
