@@ -5,8 +5,8 @@ data "archive_file" "source_code" {
 }
 
 resource "aws_lambda_function" "main" {
-  function_name    = var.prefix
-  role             = aws_iam_role.iam_for_lambda.arn
+  function_name    = "${var.prefix}_${var.project}"
+  role             = aws_iam_role.lambda.arn
   runtime          = "python3.8"
   handler          = "index.lambda_handler"
   timeout          = 10
