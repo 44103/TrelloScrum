@@ -27,6 +27,7 @@ def lambda_handler(event, context):
     # Scrumに必要な作業を管理
     scrum = sc.Scrum(client, tr_event)
     scrum.stamping()
+    scrum.request_slack()
 
   except Exception as e:
     # デバッグ用

@@ -1,2 +1,3 @@
 numpy
 py-trello
+slackweb

@@ -13,3 +13,7 @@ variable "trello_token" {
 variable "trello_board_id" {
   description = "TrelloボードID"
 }
+
+variable "slack_url" {
+  description = "SlackのIncomming Webhook URL"
+}

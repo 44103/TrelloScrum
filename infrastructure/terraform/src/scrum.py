@@ -12,18 +12,37 @@ class Scrum(sg.Singleton):
     for label in self.board.get_labels():
       self.labels[label.name] = label
 
+  def request_slack(self):
+    # POレビュー依頼
+    import slackweb
+
+    slack = slackweb.Slack(url=os.environ["slack_url"])
+    list_after = self.tr_event.get_list_after_name()
+
+    attachments = [
+      {
+        "color": "#2eb886",
+        "title": f"ストーリー「{self.card.name}」",
+        "title_link": f"{self.card.url}",
+        "text": "がDoneになりました。お手すきの際にPOレビューお願いします。"
+      }
+    ]
+
+    if "Done" in list_after:
+      slack.notify(text="<@kyoshitomi>", attachments=attachments)
+
   def stamping(self):
     # 自動打刻
     list_before = self.tr_event.get_list_before_name()
     list_after = self.tr_event.get_list_after_name()
 
     if "ToDo" in list_before and "Doing" in list_after:
-      self.card.comment("開始時間：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+      self.card.comment("**開始時間**：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
     if "Doing" in list_before:
       if "ToDo" in list_after:
-        self.card.comment("中断時間：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+        self.card.comment("**中断時間**：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
       elif "Done" in list_after:
-        self.card.comment("完了時間：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+        self.card.comment("**完了時間**：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
 
       self.__labeling_2h()
 
