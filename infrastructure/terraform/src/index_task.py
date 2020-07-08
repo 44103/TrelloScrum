@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     api_key=os.environ["trello_api_key"],
     api_secret=os.environ["trello_token"]
   )
-  
+
   try:
     # イベント管理クラス
     tr_event = te.TrelloEvent(event)
