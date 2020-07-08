@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "main" {
-  name = "${var.prefix}_${var.project}"
+  name = "${var.prefix}_${var.project}_${var.context}"
 
   binary_media_types = [
     "*/*",

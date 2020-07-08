@@ -8,11 +8,9 @@ variable "region" {
 variable "prefix" {
   description = "リソース名のPrefix"
 }
-
 variable "project" {
   description = "プロジェクト名"
 }
-
 variable "suffix" {
   description = "リソース名のSuffix"
 }
@@ -21,13 +19,14 @@ variable "suffix" {
 variable "trello_api_key" {
   description = "Trello APIキー"
 }
-
 variable "trello_token" {
   description = "Trelloトークン"
 }
-
-variable "trello_board_id" {
-  description = "TrelloボードID"
+variable "trello_task_board_id" {
+  description = "TrelloTaskボードID"
+}
+variable "trello_story_board_id" {
+  description = "TrelloStoryボードID"
 }
 
 variable "slack_url" {
