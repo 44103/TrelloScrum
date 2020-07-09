@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     api_key=os.environ["trello_api_key"],
     api_secret=os.environ["trello_token"]
   )
-  
+
   try:
     # イベント管理クラス
     tr_event = te.TrelloEvent(event)
@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     # target_card = client.get_card(tr_event.get_card_id())
     # Scrumに必要な作業を管理
     scrum = sc.Scrum(client, tr_event)
-    # scrum.stamping()
+    scrum.stamping()
     scrum.request_slack()
 
   except Exception as e:

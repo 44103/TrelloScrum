@@ -31,6 +31,7 @@ variable "trello_story_board_id" {
 
 variable "slack_url" {
   description = "SlackのIncomming Webhook URL"
-}variable "slack_mention" {
+}
+variable "slack_mention" {
   description = "SlackのメンションID"
 }
