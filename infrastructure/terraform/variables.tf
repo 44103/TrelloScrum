@@ -17,15 +17,15 @@ variable "suffix" {
 
 # API
 variable "trello_base_env" {
-  description = "Trello環境変数"
+  description = "Trello基本環境変数"
   type        = map(string)
 }
 variable "trello_task_env" {
-  description = "Trello環境変数"
+  description = "TrelloTaskBoard用環境変数"
   type        = map(string)
 }
 variable "trello_story_env" {
-  description = "Trello環境変数"
+  description = "TrelloStoryBoard環境変数"
   type        = map(string)
 }
 

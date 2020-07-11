@@ -8,11 +8,21 @@ prefix = "test"
 suffix = ""
 
 # Trello API
-trello_api_key  = ""
-trello_token    = ""
-trello_task_board_id  = ""
-trello_story_board_id = ""
+trello_base_env = {
+  "trello_api_key" = ""
+  "trello_token"   = ""
+}
+trello_task_env = {
+  "trello_main_board_id" = ""
+  "trello_sub_board_id"  = ""
+}
+trello_story_env = {
+  "trello_main_board_id" = ""
+  "trello_sub_board_id"  = ""
+}
 
 # Slack
-slack_url = ""
-slack_mention = ""
+slack_env = {
+  "slack_webhook_url" = ""
+  "slack_mention"     = ""
+}
