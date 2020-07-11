@@ -16,7 +16,8 @@ query = {
    'key': cert_keys["api_key"],
    'token': cert_keys["token"],
    'callbackURL': cert_keys["callback_url"],
-   'idModel': cert_keys["board_id"]
+   'idModel': cert_keys["board_id"],
+   'description': '自動依頼'
 }
 
 response = requests.request(

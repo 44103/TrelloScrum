@@ -36,24 +36,52 @@ class Scrum(sg.Singleton):
     list_before = self.tr_event.get_list_before_name()
     list_after = self.tr_event.get_list_after_name()
 
-    message = ""
+    ts_comment =  self.__get_time_stamp_comment()
+    now_time = datetime.now()
+    summary = ""
     if "ToDo" in list_before and "Doing" in list_after:
-      message = "**開始時間**：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+      summary = ">**再開**" if ts_comment else "\n**開始時間**"
     if "Doing" in list_before:
       if "ToDo" in list_after:
-        message = "**中断時間**：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-        message += "\n**経過時間**："
+        summary = ">**中断**"
       elif "Done" in list_after:
-        message = "**完了時間**：" + datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-      self.__labeling_2h()
-      message += f"\n**経過時間**：{self.__calc_elapsed_time()}"
+        summary = "**完了時間**"
+    if not summary:
+      return
+      
+    message = f"{summary}：" + now_time.strftime("%Y/%m/%d %H:%M:%S")
+    indent_flag = 0
+    
+    if ts_comment:
+      text = ts_comment["data"]["text"]
+      message += '\n' + text
 
-    if message:
+      self.card.update_comment(ts_comment["id"], message)
+      if "再開" in summary:
+        return
+      # 中断・完了時に経過時間を記載
+      elapsed_time = self.__calc_elapsed_time()
+      if "経過" not in message:
+        message += f"\n---\n**経過時間**：{elapsed_time}"
+      else:
+        message_split = message.split('\n')
+        message_split[-1] = f"**経過時間**：{elapsed_time}"
+        message = '\n'.join(message_split)
+      
+      self.card.update_comment(ts_comment["id"], message)
+      
+      self.__labeling_2h(elapsed_time)
+    else:
       self.card.comment(message)
 
-  def __labeling_2h(self):
+  def __labeling_2h(self, elapsed_time):
     # 2H超えのタスクにラベルをつける
-    elapsed_time = self.__calc_elapsed_time()
+    # 既にラベルが付いているものは除く
+    if self.card.labels:
+      for label in self.card.labels:
+        if "2H" in label.name:
+          return
+
     if elapsed_time > timedelta(hours=2):
       self.card.add_label(self.labels["2H"])
 
@@ -62,21 +90,26 @@ class Scrum(sg.Singleton):
     elapsed_time = timedelta()
     tmp_time = datetime(year=2000, month=6, day=15)
 
-    # コマンドのフィルタ
-    for c in self.card.get_comments():
-      for tg_c in Scrum.target_comments:
-        if tg_c in c["data"]["text"]:
-          break
-      else:
+    ts_comment =  self.__get_time_stamp_comment()
+    if not ts_comment:
+      return elapsed_time
+
+    for line in ts_comment["data"]["text"].split('\n'):
+      if "経過" in line:
         continue
-
-      comment = c['data']['text']
-      if "\n" in comment:
-        comment = comment.split('\n')[0]
-      comment = comment.split('：')
-      if "開始時間" in comment[0]:
-        elapsed_time += (tmp_time - datetime.strptime(comment[1], '%Y/%m/%d %H:%M:%S'))
+      context = line.split('：')
+      if len(context) == 1:
+        continue
+      past_time = datetime.strptime(context[1], '%Y/%m/%d %H:%M:%S')
+      if "開始" in context[0] or "再開" in context[0]:
+        elapsed_time += (tmp_time - past_time)
       else:
-        elapsed_time -= (tmp_time - datetime.strptime(comment[1], '%Y/%m/%d %H:%M:%S'))
-
+        elapsed_time -= (tmp_time - past_time)
+    
     return elapsed_time
+
+  def __get_time_stamp_comment(self):
+    for comment in self.card.get_comments():
+      if "**開始時間**" in comment["data"]["text"]:
+        return comment
+    return None

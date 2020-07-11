@@ -15,8 +15,8 @@ headers = {
 query = {
    'key': cert_keys["api_key"],
    'token': cert_keys["token"],
-   'callbackURL': cert_keys["callback_url"],
-   'description': '自動打刻'
+   # 'callbackURL': cert_keys["callback_url"],
+   'description': '自動依頼'
 }
 
 response = requests.request(
