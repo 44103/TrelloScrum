@@ -1,24 +1,17 @@
 module "task_lambda" {
-  source          = "./modules/lambda"
-  prefix          = var.prefix
-  project         = var.project
-  context         = "task"
-  trello_api_key  = var.trello_api_key
-  trello_token    = var.trello_token
-  trello_board_id = var.trello_task_board_id
-  slack_url       = var.slack_url
+  source  = "./modules/lambda"
+  prefix  = var.prefix
+  project = var.project
+  context = "task"
+  envs    = merge(var.trello_base_env, var.trello_task_env)
 }
 
 module "story_lambda" {
-  source          = "./modules/lambda"
-  prefix          = var.prefix
-  project         = var.project
-  context         = "story"
-  trello_api_key  = var.trello_api_key
-  trello_token    = var.trello_token
-  trello_board_id = var.trello_story_board_id
-  slack_url       = var.slack_url
-  slack_mention   = var.slack_mention
+  source  = "./modules/lambda"
+  prefix  = var.prefix
+  project = var.project
+  context = "story"
+  envs    = merge(var.trello_base_env, var.trello_story_env, var.slack_env)
 }
 
 module "task_api_gateway" {

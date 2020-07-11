@@ -16,22 +16,20 @@ variable "suffix" {
 }
 
 # API
-variable "trello_api_key" {
-  description = "Trello APIキー"
+variable "trello_base_env" {
+  description = "Trello環境変数"
+  type        = map(string)
 }
-variable "trello_token" {
-  description = "Trelloトークン"
+variable "trello_task_env" {
+  description = "Trello環境変数"
+  type        = map(string)
 }
-variable "trello_task_board_id" {
-  description = "TrelloTaskボードID"
-}
-variable "trello_story_board_id" {
-  description = "TrelloStoryボードID"
+variable "trello_story_env" {
+  description = "Trello環境変数"
+  type        = map(string)
 }
 
-variable "slack_url" {
-  description = "SlackのIncomming Webhook URL"
-}
-variable "slack_mention" {
-  description = "SlackのメンションID"
+variable "slack_env" {
+  description = "Slack環境変数"
+  type        = map(string)
 }

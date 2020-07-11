@@ -6,7 +6,7 @@ class Scrum(sg.Singleton):
   target_comments = ["**開始時間**", "**中断時間**", "**完了時間**"]
   def __init__(self, client, trevent):
     self.tr_event = trevent
-    self.board = client.get_board(os.environ["trello_board_id"])
+    self.board = client.get_board(os.environ["trello_main_board_id"])
     self.card = client.get_card(self.tr_event.get_card_id())
     self.labels = {}
     for label in self.board.get_labels():
@@ -16,7 +16,7 @@ class Scrum(sg.Singleton):
     # POレビュー依頼
     import slackweb
 
-    slack = slackweb.Slack(url=os.environ["slack_url"])
+    slack = slackweb.Slack(url=os.environ["slack_webhook_url"])
     list_after = self.tr_event.get_list_after_name()
 
     attachments = [
