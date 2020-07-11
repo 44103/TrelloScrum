@@ -18,6 +18,7 @@ module "story_lambda" {
   trello_token    = var.trello_token
   trello_board_id = var.trello_story_board_id
   slack_url       = var.slack_url
+  slack_mention   = var.slack_mention
 }
 
 module "task_api_gateway" {

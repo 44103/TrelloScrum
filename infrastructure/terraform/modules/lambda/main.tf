@@ -19,7 +19,8 @@ resource "aws_lambda_function" "main" {
       trello_token    = var.trello_token
       trello_board_id = var.trello_board_id
       TZ              = "Asia/Tokyo"
-      slack_url = var.slack_url
+      slack_url       = var.slack_url
+      slack_mention   = var.slack_mention
     }
   }
 }
