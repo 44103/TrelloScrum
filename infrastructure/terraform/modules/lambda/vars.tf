@@ -10,19 +10,7 @@ variable "context" {
 }
 
 # API
-variable "trello_api_key" {
-  description = "Trello APIキー"
-}
-variable "trello_token" {
-  description = "Trelloトークン"
-}
-variable "trello_board_id" {
-  description = "TrelloボードID"
-}
-variable "slack_url" {
-  description = "SlackのIncomming Webhook URL"
-}
-variable "slack_mention" {
-  description = "SlackのメンションID"
-  default = ""
+variable "envs" {
+  description = "環境変数"
+  type = map(string)
 }

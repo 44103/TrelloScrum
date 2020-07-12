@@ -11,6 +11,7 @@ terraform.tfvars.exampleファイルをterraform.tfvarsにリネームし、使�
 コマンド毎に使い切りのコンテナを建てる。  
 ```bash
 docker-compose run --rm terraform fmt
+docker-compose run --rm terraform validate
 docker-compose run --rm terraform init
 docker-compose run --rm terraform plan
 docker-compose run --rm terraform apply -auto-approve

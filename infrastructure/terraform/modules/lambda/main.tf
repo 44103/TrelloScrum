@@ -14,13 +14,9 @@ resource "aws_lambda_function" "main" {
   source_code_hash = data.archive_file.source_code.output_base64sha256
 
   environment {
-    variables = {
-      trello_api_key  = var.trello_api_key
-      trello_token    = var.trello_token
-      trello_board_id = var.trello_board_id
-      TZ              = "Asia/Tokyo"
-      slack_url       = var.slack_url
-      slack_mention   = var.slack_mention
-    }
+    variables = merge(
+      { "TZ" = "Asia/Tokyo" },
+      var.envs
+    )
   }
 }

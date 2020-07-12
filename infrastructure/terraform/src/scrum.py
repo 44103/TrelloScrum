@@ -1,22 +1,25 @@
 import singleton as sg
 import os
 from datetime import datetime, timedelta
+# from collections import defaultdict
+import random as rand
 
 class Scrum(sg.Singleton):
-  target_comments = ["**開始時間**", "**中断時間**", "**完了時間**"]
   def __init__(self, client, trevent):
+    self.client = client
     self.tr_event = trevent
-    self.board = client.get_board(os.environ["trello_board_id"])
+    self.main_board = client.get_board(os.environ["trello_main_board_id"])
+    self.sub_board = client.get_board(os.environ["trello_sub_board_id"])
     self.card = client.get_card(self.tr_event.get_card_id())
     self.labels = {}
-    for label in self.board.get_labels():
+    for label in self.main_board.get_labels():
       self.labels[label.name] = label
 
   def request_slack(self):
     # POレビュー依頼
     import slackweb
 
-    slack = slackweb.Slack(url=os.environ["slack_url"])
+    slack = slackweb.Slack(url=os.environ["slack_webhook_url"])
     list_after = self.tr_event.get_list_after_name()
 
     attachments = [
@@ -113,3 +116,23 @@ class Scrum(sg.Singleton):
       if "**開始時間**" in comment["data"]["text"]:
         return comment
     return None
+
+  def move_story_to_task(self):
+    # Story内容をTaskにコピー
+    list_before = self.tr_event.get_list_before_name()
+    list_after = self.tr_event.get_list_after_name()
+
+    if not ("Backlog" in list_before and "ToDo" in list_after):
+      return
+
+    list_story = False
+    for l in self.sub_board.all_lists():
+      if "Story" in l.name:
+        list_story = l
+    
+    if not list_story:
+      raise Exception("Not Exist: Story List in Task Board")
+    
+    colors = ["green", "yellow", "orange", "red", "purple", "blue"]
+    new_label = self.sub_board.add_label(self.card.name, rand.choice(colors))
+    list_story.add_card(self.card.name, self.card.description, [new_label])
