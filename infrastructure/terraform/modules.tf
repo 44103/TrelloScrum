@@ -3,7 +3,11 @@ module "task_lambda" {
   prefix  = var.prefix
   project = var.project
   context = "task"
-  envs    = merge(var.trello_base_env, var.trello_task_env)
+  envs = merge(
+    { "TZ" = "Asia/Tokyo" },
+    var.trello_base_env,
+    var.trello_task_env
+  )
 }
 
 module "story_lambda" {
@@ -11,7 +15,12 @@ module "story_lambda" {
   prefix  = var.prefix
   project = var.project
   context = "story"
-  envs    = merge(var.trello_base_env, var.trello_story_env, var.slack_env)
+  envs = merge(
+    { "TZ" = "Asia/Tokyo" },
+    var.trello_base_env,
+    var.trello_story_env,
+    var.slack_env
+  )
 }
 
 module "task_api_gateway" {
