@@ -32,7 +32,7 @@ class Scrum(sg.Singleton):
     ]
 
     if "Done" in list_after:
-      slack.notify(text=f"<@{os.environ['slack_mention']}", attachments=attachments)
+      slack.notify(text=f"<@{os.environ['slack_mention']}>", attachments=attachments)
 
   def stamping(self):
     # 自動打刻
