@@ -51,7 +51,7 @@ resource "aws_api_gateway_method" "proxy_any" {
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "proxy_lambda_integration" {
+resource "aws_api_gateway_integration" "proxy_lambda" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   resource_id = aws_api_gateway_resource.proxy_target.id
   http_method = aws_api_gateway_method.proxy_any.http_method
@@ -65,24 +65,25 @@ resource "aws_api_gateway_integration" "proxy_lambda_integration" {
   uri = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${var.lambda_arn}/invocations"
 }
 
-resource "aws_lambda_permission" "api_gateway_lambda" {
+resource "aws_lambda_permission" "lambda" {
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_arn
   principal     = "apigateway.amazonaws.com"
 
   # The /*/*/* part allows invocation from any stage, method and resource path within API Gateway REST API.
-  source_arn = "${aws_api_gateway_rest_api.main.execution_arn}/*/*/*"
+  # source_arn = "${aws_api_gateway_rest_api.main.execution_arn}/*/*/*"
+  source_arn = "${aws_api_gateway_rest_api.main.execution_arn}/*/${aws_api_gateway_method.any.http_method}${data.aws_api_gateway_resource.root.path}"
 }
 
 resource "aws_api_gateway_deployment" "production" {
   depends_on = [
     aws_api_gateway_integration.lambda_integration,
-    aws_api_gateway_integration.proxy_lambda_integration,
+    aws_api_gateway_integration.proxy_lambda,
   ]
 
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = "prod"
 
   # API Gatewayの変更時に再デプロイさせるためのハック
-  stage_description = "setting file hash = ${md5(file("./modules/api_gateway/main.tf"))}"
+  stage_description = "setting file hash = ${md5(file("./modules/apigw/main.tf"))}"
 }
