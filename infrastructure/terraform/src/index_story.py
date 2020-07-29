@@ -28,7 +28,7 @@ def lambda_handler(event, context):
     target_card = client.get_card(tr_event.get_card_id())
     # Scrumに必要な作業を管理
     scrum = sc.Scrum(client, tr_event)
-    scrum.stamping()
+    scrum.stamping(True)
     scrum.request_slack()
     scrum.move_story_to_task()
 

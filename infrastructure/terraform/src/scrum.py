@@ -34,7 +34,7 @@ class Scrum(sg.Singleton):
     if "Done" in list_after:
       slack.notify(text=f"<@{os.environ['slack_mention']}>", attachments=attachments)
 
-  def stamping(self):
+  def stamping(self, is_story=False):
     # 自動打刻
     list_before = self.tr_event.get_list_before_name()
     list_after = self.tr_event.get_list_after_name()
@@ -51,10 +51,10 @@ class Scrum(sg.Singleton):
         summary = "**完了時間**"
     if not summary:
       return
-      
+
     message = f"{summary}：" + now_time.strftime("%Y/%m/%d %H:%M:%S")
     indent_flag = 0
-    
+
     if ts_comment:
       text = ts_comment["data"]["text"]
       message += '\n' + text
@@ -70,10 +70,10 @@ class Scrum(sg.Singleton):
         message_split = message.split('\n')
         message_split[-1] = f"**経過時間**：{elapsed_time}"
         message = '\n'.join(message_split)
-      
+
       self.card.update_comment(ts_comment["id"], message)
-      
-      self.__labeling_2h(elapsed_time)
+      if not is_story:
+        self.__labeling_2h(elapsed_time)
     else:
       self.card.comment(message)
 
@@ -108,7 +108,7 @@ class Scrum(sg.Singleton):
         elapsed_time += (tmp_time - past_time)
       else:
         elapsed_time -= (tmp_time - past_time)
-    
+
     return elapsed_time
 
   def __get_time_stamp_comment(self):
@@ -129,10 +129,10 @@ class Scrum(sg.Singleton):
     for l in self.sub_board.all_lists():
       if "Story" in l.name:
         list_story = l
-    
+
     if not list_story:
       raise Exception("Not Exist: Story List in Task Board")
-    
+
     colors = ["green", "yellow", "orange", "red", "purple", "blue"]
     new_label = self.sub_board.add_label(self.card.name, rand.choice(colors))
     list_story.add_card(self.card.name, self.card.description, [new_label])
