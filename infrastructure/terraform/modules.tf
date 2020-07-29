@@ -22,7 +22,7 @@ module "story_lambda" {
 }
 
 module "task_api_gateway" {
-  source     = "./modules/api_gateway"
+  source     = "./modules/apigw"
   region     = var.region
   prefix     = var.prefix
   project    = var.project
@@ -31,7 +31,7 @@ module "task_api_gateway" {
 }
 
 module "story_api_gateway" {
-  source     = "./modules/api_gateway"
+  source     = "./modules/apigw"
   region     = var.region
   prefix     = var.prefix
   project    = var.project
