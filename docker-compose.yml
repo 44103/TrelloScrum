@@ -6,7 +6,7 @@ services:
     tty: true
     volumes:
       - ./api/src:/workdir/api
-      - ./infrastructure/terraform/src:/workdir/lambda
+      - ./infrastructure/src:/workdir/lambda
     working_dir: "/workdir/lambda"
 
   terraform:
@@ -14,7 +14,7 @@ services:
     container_name: terraform_env
     volumes:
       - ~/.aws:/root/.aws:ro
-      - ./infrastructure/terraform:/workdir
+      - ./infrastructure:/workdir
     working_dir: "/workdir"
     environment:
       - AWS_ACCESS_KEY_ID

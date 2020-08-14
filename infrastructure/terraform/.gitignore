@@ -1,9 +1,0 @@
-# 環境変数
-.env
-terraform.tfvars
-
-# 一時ファイル
-.tfstate
-terraform.tfstate*
-.terraform
-dist
