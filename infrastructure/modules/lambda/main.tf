@@ -1,17 +1,17 @@
-data "archive_file" "source_code" {
+data "archive_file" "_" {
   type        = "zip"
-  source_dir  = "./src"
-  output_path = "./dist/source.zip"
+  source_dir  = "../src"
+  output_path = "../dist/source.zip"
 }
 
-resource "aws_lambda_function" "main" {
-  function_name    = "${var.prefix}_${var.project}_${var.context}"
-  role             = aws_iam_role.lambda.arn
+resource "aws_lambda_function" "_" {
+  function_name    = var.content == "" ? var.aws_name : join("_", [var.aws_name, var.content])
+  role             = var.iam_role
   runtime          = "python3.8"
-  handler          = "index_${var.context}.lambda_handler"
+  handler          = "index_${var.content}.lambda_handler"
   timeout          = 10
-  filename         = data.archive_file.source_code.output_path
-  source_code_hash = data.archive_file.source_code.output_base64sha256
+  filename         = data.archive_file._.output_path
+  source_code_hash = data.archive_file._.output_base64sha256
 
   environment {
     variables = merge(

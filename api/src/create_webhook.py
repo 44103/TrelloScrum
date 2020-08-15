@@ -17,7 +17,7 @@ query = {
    'token': cert_keys["token"],
    'callbackURL': cert_keys["callback_url"],
    'idModel': cert_keys["board_id"],
-   'description': '自動依頼'
+   'description': '自動打刻<Story>'
 }
 
 response = requests.request(

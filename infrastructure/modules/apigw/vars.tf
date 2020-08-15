@@ -2,14 +2,12 @@
 variable "region" {}
 
 # 命名規則
-variable "prefix" {
-  description = "リソース名のPrefix"
+variable "aws_name" {
+  description = "AWS Consoleで表示されるリソース名"
 }
-variable "project" {
-  description = "プロジェクト名"
-}
-variable "context" {
-  description = "リソース名のContext"
+variable "content" {
+  description = "リソース名のcontent"
+  default = ""
 }
 
 # リソース

@@ -1,2 +1,2 @@
-cert
-tmp
+# 環境変数
+.env

@@ -1,12 +1,15 @@
 # 命名規則
-variable "prefix" {
-  description = "リソース名のPrefix"
+variable "aws_name" {
+  description = "AWS Consoleに表示されるリソース名"
 }
-variable "project" {
-  description = "プロジェクト名"
+variable "content" {
+  description = "リソース名のcontent"
+  default = ""
 }
-variable "context" {
-  description = "リソース名のContext"
+
+# IAM
+variable "iam_role" {
+  description = "Lambdaに追加するIAM Role"
 }
 
 # API

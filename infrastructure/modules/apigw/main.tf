@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "main" {
-  name = "${var.prefix}_${var.project}_${var.context}"
+  name = var.content == "" ? var.aws_name : join("_", [var.aws_name, var.content])
 
   binary_media_types = [
     "*/*",
@@ -85,5 +85,5 @@ resource "aws_api_gateway_deployment" "production" {
   stage_name  = "prod"
 
   # API Gatewayの変更時に再デプロイさせるためのハック
-  stage_description = "setting file hash = ${md5(file("./modules/apigw/main.tf"))}"
+  stage_description = "HASH=${md5(file("../modules/apigw/main.tf"))}"
 }

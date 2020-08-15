@@ -3,7 +3,7 @@
 import requests
 import json
 
-with open('../cert/key.json') as f:
+with open('./cert/key.json') as f:
   cert_keys = json.load(f)
 
 

@@ -23,7 +23,7 @@ WORKDIR /workdir/lambda
 COPY requirements.txt ${PWD}
 
 # pythonのパッケージをインストール
-RUN pip install -r requirements.txt -t /workdir/lambda/
+RUN pip install -r requirements.txt -t /workdir/lambda
 
 # 作業するディレクトリを変更
 # コンテナの内部には入った際のディレクトリの位置を変更している
