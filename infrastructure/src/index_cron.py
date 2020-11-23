@@ -12,6 +12,13 @@ def return_context(message):
     'body': f'{{"message": "{message}"}}'
   }
 
+def get_list(board, name):
+  # 対象のリストを取得
+  for l in board.all_lists():
+    if name in l.name:
+      return l
+  return None
+
 def lambda_handler(event, context):
   # Trello Client
   client = TrelloClient(
@@ -21,13 +28,17 @@ def lambda_handler(event, context):
 
   try:
     # イベント管理クラス
-    tr_event = te.TrelloEvent(event)
+    # tr_event = te.TrelloEvent(event)
     # デバッグ用
     # target_card = client.get_card(tr_event.get_card_id())
-    # Scrumに必要な作業を管理
-    scrum = sc.Scrum(client, tr_event, os.environ["trello_task_board_id"], os.environ["trello_story_board_id"])
-    scrum.stamping()
-    # scrum.request_slack()
+    task_board = client.get_board(os.environ["trello_task_board_id"])
+
+    # 対象のリストを取得
+    doing_list = get_list(task_board, "Doing")
+
+    for card in doing_list.get_cards():
+      todo_list = get_list(task_board, card.labels[0].name)
+      card.change_list(todo_list.id)
 
   except Exception as e:
     # デバッグ用

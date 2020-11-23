@@ -14,7 +14,7 @@ module "task_lambda" {
   iam_role = module.iam_lambda.arn
   envs = merge(
     var.trello_base_env,
-    var.trello_task_env
+    var.trello_board_env
   )
 }
 
@@ -27,7 +27,7 @@ module "story_lambda" {
   iam_role = module.iam_lambda.arn
   envs = merge(
     var.trello_base_env,
-    var.trello_story_env,
+    var.trello_board_env,
     var.slack_env
   )
 }
@@ -50,4 +50,28 @@ module "story_apigw" {
   )
   content    = "story"
   lambda_arn = module.story_lambda.arn
+}
+
+module "cron_lambda" {
+  source = "../modules/lambda"
+  aws_name = join(
+    "_", [var.prefix, var.project]
+  )
+  content  = "cron"
+  iam_role = module.iam_lambda.arn
+  envs = merge(
+    var.trello_base_env,
+    var.trello_board_env,
+    var.slack_env
+  )
+}
+
+module "task_cloudwatch" {
+  source = "../modules/cloudwatch"
+  aws_name = join(
+    "_", [var.prefix, var.project]
+  )
+  content    = "task"
+  cron = "cron(0 0 1 * ? *)"
+  lambda_arn = module.cron_lambda.arn
 }

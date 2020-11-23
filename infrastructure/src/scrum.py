@@ -5,11 +5,11 @@ from datetime import datetime, timedelta
 import random as rand
 
 class Scrum(sg.Singleton):
-  def __init__(self, client, trevent):
+  def __init__(self, client, trevent, main_board, sub_board):
     self.client = client
     self.tr_event = trevent
-    self.main_board = client.get_board(os.environ["trello_main_board_id"])
-    self.sub_board = client.get_board(os.environ["trello_sub_board_id"])
+    self.main_board = client.get_board(main_board)
+    self.sub_board = client.get_board(sub_board)
     self.card = client.get_card(self.tr_event.get_card_id())
     self.labels = {}
     for label in self.main_board.get_labels():

@@ -13,7 +13,7 @@ class TrelloEvent(sg.Singleton):
     if "PUT" == self.get_http_method():
       raise ej.ExitException("Succeed: Update Trello API")
 
-      
+
     self.__body = None if "body" not in event else json.loads(base64.b64decode(event["body"]).decode())
 
     if None == self.__body:
