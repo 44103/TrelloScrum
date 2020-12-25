@@ -4,7 +4,7 @@ resource "aws_cloudwatch_event_rule" "_" {
 }
 
 resource "aws_cloudwatch_event_target" "_" {
-  rule      = "${aws_cloudwatch_event_rule._.name}"
+  rule      = aws_cloudwatch_event_rule._.name
   arn       = var.lambda_arn
   target_id = var.content == "" ? var.aws_name : join("_", [var.aws_name, var.content])
 }
