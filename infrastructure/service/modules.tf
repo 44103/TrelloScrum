@@ -1,15 +1,11 @@
 module "iam_lambda" {
   source = "../modules/iam/lambda"
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
 }
 
 module "task_lambda" {
   source = "../modules/lambda"
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
   content  = "task"
   iam_role = module.iam_lambda.arn
   envs = merge(
@@ -20,9 +16,7 @@ module "task_lambda" {
 
 module "story_lambda" {
   source = "../modules/lambda"
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
   content  = "story"
   iam_role = module.iam_lambda.arn
   envs = merge(
@@ -35,9 +29,7 @@ module "story_lambda" {
 module "task_apigw" {
   source = "../modules/apigw"
   region = var.region
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
   content    = "task"
   lambda_arn = module.task_lambda.arn
 }
@@ -45,18 +37,14 @@ module "task_apigw" {
 module "story_apigw" {
   source = "../modules/apigw"
   region = var.region
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
   content    = "story"
   lambda_arn = module.story_lambda.arn
 }
 
 module "cron_lambda" {
   source = "../modules/lambda"
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
   content  = "cron"
   iam_role = module.iam_lambda.arn
   envs = merge(
@@ -68,9 +56,7 @@ module "cron_lambda" {
 
 module "task_cloudwatch" {
   source = "../modules/cloudwatch"
-  aws_name = join(
-    "_", [var.prefix, var.project]
-  )
+  aws_name = local.aws_name
   content    = "task"
   cron = "cron(0 0 1 * ? *)"
   lambda_arn = module.cron_lambda.arn
