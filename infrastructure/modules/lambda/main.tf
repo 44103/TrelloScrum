@@ -5,7 +5,7 @@ data "archive_file" "_" {
 }
 
 resource "aws_lambda_function" "_" {
-  function_name    = var.content == "" ? var.aws_name : join("_", [var.aws_name, var.content])
+  function_name    = local.aws_name
   role             = var.iam_role
   runtime          = "python3.8"
   handler          = "index_${var.content}.lambda_handler"
@@ -14,9 +14,6 @@ resource "aws_lambda_function" "_" {
   source_code_hash = data.archive_file._.output_base64sha256
 
   environment {
-    variables = merge(
-      { "TZ" = "Asia/Tokyo" },
-      var.envs
-    )
+    variables = local.envs
   }
 }

@@ -1,89 +1,42 @@
-resource "aws_api_gateway_rest_api" "main" {
-  name = var.content == "" ? var.aws_name : join("_", [var.aws_name, var.content])
-
-  binary_media_types = [
-    "*/*",
-  ]
+resource "aws_api_gateway_rest_api" "_" {
+  name = local.aws_name
 }
 
-data "aws_api_gateway_resource" "root" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  path        = "/"
+resource "aws_api_gateway_resource" "_" {
+  path_part   = var.path_part
+  parent_id   = aws_api_gateway_rest_api._.root_resource_id
+  rest_api_id = aws_api_gateway_rest_api._.id
 }
 
-resource "aws_api_gateway_method" "any" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = data.aws_api_gateway_resource.root.id
+resource "aws_api_gateway_method" "_" {
+  rest_api_id   = aws_api_gateway_rest_api._.id
+  resource_id   = aws_api_gateway_resource._.id
   http_method   = "ANY"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "lambda_integration" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = data.aws_api_gateway_resource.root.id
-  http_method = aws_api_gateway_method.any.http_method
-
-  # Lambda プロキシ統合
-  type = "AWS_PROXY"
-
-  # Lambda へは POST のみ対応
+resource "aws_api_gateway_integration" "_" {
+  rest_api_id             = aws_api_gateway_rest_api._.id
+  resource_id             = aws_api_gateway_resource._.id
+  http_method             = aws_api_gateway_method._.http_method
   integration_http_method = "POST"
-
-  uri = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${var.lambda_arn}/invocations"
+  type                    = "AWS_PROXY"
+  uri                     = var.lambda.invoke_arn
 }
 
-resource "aws_api_gateway_resource" "proxy" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  parent_id   = aws_api_gateway_rest_api.main.root_resource_id
-  path_part   = "proxy"
-}
-
-resource "aws_api_gateway_resource" "proxy_target" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  parent_id   = aws_api_gateway_resource.proxy.id
-  path_part   = "{target+}"
-}
-
-resource "aws_api_gateway_method" "proxy_any" {
-  rest_api_id   = aws_api_gateway_rest_api.main.id
-  resource_id   = aws_api_gateway_resource.proxy_target.id
-  http_method   = "ANY"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "proxy_lambda" {
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  resource_id = aws_api_gateway_resource.proxy_target.id
-  http_method = aws_api_gateway_method.proxy_any.http_method
-
-  # Lambda プロキシ統合
-  type = "AWS_PROXY"
-
-  # Lambda へは POST のみ対応
-  integration_http_method = "POST"
-
-  uri = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${var.lambda_arn}/invocations"
-}
-
-resource "aws_lambda_permission" "lambda" {
+resource "aws_lambda_permission" "_" {
+  statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = var.lambda_arn
+  function_name = var.lambda.function_name
   principal     = "apigateway.amazonaws.com"
-
-  # The /*/*/* part allows invocation from any stage, method and resource path within API Gateway REST API.
-  # source_arn = "${aws_api_gateway_rest_api.main.execution_arn}/*/*/*"
-  source_arn = "${aws_api_gateway_rest_api.main.execution_arn}/*/${aws_api_gateway_method.any.http_method}${data.aws_api_gateway_resource.root.path}"
+  source_arn    = "${aws_api_gateway_rest_api._.execution_arn}/*/${aws_api_gateway_method._.http_method}${aws_api_gateway_resource._.path}"
 }
 
-resource "aws_api_gateway_deployment" "production" {
+resource "aws_api_gateway_deployment" "_" {
   depends_on = [
-    aws_api_gateway_integration.lambda_integration,
-    aws_api_gateway_integration.proxy_lambda,
+    aws_api_gateway_integration._,
   ]
-
-  rest_api_id = aws_api_gateway_rest_api.main.id
-  stage_name  = "prod"
-
-  # API Gatewayの変更時に再デプロイさせるためのハック
+  rest_api_id       = aws_api_gateway_rest_api._.id
+  stage_name        = var.stage_name
   stage_description = "HASH=${md5(file("../modules/apigw/main.tf"))}"
 }

@@ -1,14 +1,24 @@
-# 環境
-variable "region" {}
-
-# 命名規則
 variable "aws_name" {
-  description = "AWS Consoleで表示されるリソース名"
+  description = "リソース名"
 }
+
+variable "lambda" {
+  type = map(string)
+}
+
+variable "path_part" {}
+
+variable "stage_name" {
+  default = "prod"
+}
+
 variable "content" {
   description = "リソース名のcontent"
   default = ""
 }
 
-# リソース
-variable "lambda_arn" {}
+locals {
+  aws_name = var.content == "" ? var.aws_name : join(
+    "_", [var.aws_name, var.content]
+  )
+}

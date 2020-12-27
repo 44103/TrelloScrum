@@ -27,5 +27,5 @@ response = requests.request(
    params=query
 )
 
-print(response.text)
-# print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+# print(response.text)
+print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))

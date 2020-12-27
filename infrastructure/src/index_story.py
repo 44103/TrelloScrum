@@ -27,15 +27,15 @@ def lambda_handler(event, context):
     # デバッグ用
     # target_card = client.get_card(tr_event.get_card_id())
     # Scrumに必要な作業を管理
-    scrum = sc.Scrum(client, tr_event, os.environ["trello_story_board_id"], os.environ["trello_task_board_id")
+    scrum = sc.Scrum(client, tr_event, os.environ["trello_story_board_id"], os.environ["trello_task_board_id"])
     scrum.stamping(True)
     scrum.request_slack()
-    scrum.move_story_to_task()
+    scrum_move_story_to_task()
 
   except Exception as e:
     # デバッグ用
     t, v, tb = sys.exc_info()
-    # target_card.comment(f"{e}\n{'>'.join(traceback.format_tb(tb))}")
-    return return_context(f"{e}\n{traceback.format_tb(tb)}")
+    # target_card.comment(f"{e}")
+    return return_context(f"{e}")
 
   return return_context("Succeed: Normal Exit")

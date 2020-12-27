@@ -14,7 +14,7 @@ class TrelloEvent(sg.Singleton):
       raise ej.ExitException("Succeed: Update Trello API")
 
 
-    self.__body = None if "body" not in event else json.loads(base64.b64decode(event["body"]).decode())
+    self.__body = None if "body" not in event else json.loads(event["body"])
 
     if None == self.__body:
       raise ej.ExitException("Failed: Trello API Event Body is None")
