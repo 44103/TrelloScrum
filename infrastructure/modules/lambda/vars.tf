@@ -19,6 +19,10 @@ variable "envs" {
   type        = map(string)
 }
 
+variable "layers" {
+  default = []
+}
+
 locals {
   aws_name = var.content == "" ? var.aws_name : join(
     "_", [var.aws_name, var.content]

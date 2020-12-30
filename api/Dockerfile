@@ -1,5 +1,5 @@
 # pythonの3.8.0をベースにする
-FROM python:3.8.0
+FROM python:3.8
 
 RUN apt update \
     && apt -y upgrade \

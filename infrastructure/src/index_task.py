@@ -1,6 +1,6 @@
-from trello import TrelloClient
 import os
 
+from trello import TrelloClient
 import trevent as te
 import scrum as sc
 

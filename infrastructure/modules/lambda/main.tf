@@ -12,6 +12,7 @@ resource "aws_lambda_function" "_" {
   timeout          = 10
   filename         = data.archive_file._.output_path
   source_code_hash = data.archive_file._.output_base64sha256
+  layers = var.layers
 
   environment {
     variables = local.envs
