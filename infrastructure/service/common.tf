@@ -5,5 +5,5 @@ module "iam_lambda" {
 
 module "lambdalayer" {
   source = "../modules/lambdalayer"
-  content = "pippkgs"
+  # content = "pippkgs"
 }

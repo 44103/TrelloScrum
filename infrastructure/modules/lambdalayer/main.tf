@@ -14,6 +14,6 @@ data "archive_file" "libs" {
 
 resource "aws_lambda_layer_version" "_" {
   filename = data.archive_file.libs.output_path
-  layer_name = var.content
+  layer_name = "python"
   compatible_runtimes = ["python3.8"]
 }
