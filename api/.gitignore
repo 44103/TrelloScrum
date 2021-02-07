@@ -1,3 +1,4 @@
-cert
+src/cert/*
+!src/cert/*.example
 tmp
 __pycache__

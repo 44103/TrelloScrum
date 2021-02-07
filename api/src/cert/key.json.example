@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "api_key": "",
+    "token": ""
+  },
+  "task": {
+    "webhook_id": "",
+    "board_id": "",
+    "callback_url": ""
+  },
+  "story": {
+    "webhook_id": "",
+    "board_id": "",
+    "callback_url": ""
+  }
+}
