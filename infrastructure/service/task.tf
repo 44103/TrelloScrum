@@ -24,7 +24,7 @@ module "task_cloudwatch" {
   source   = "../modules/cloudwatch"
   aws_name = local.aws_name
   content  = "task"
-  cron     = "cron(0 0 1 * ? *)"
+  cron     = "cron(30 2 ? * MON-FRI *)"
   lambda   = module.cron_lambda
 }
 
@@ -38,4 +38,7 @@ module "cron_lambda" {
     var.trello_board_env,
     var.slack_env
   )
+  layers = [
+    module.lambdalayer.arn
+  ]
 }

@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     # 対象のリストを取得
     doing_list = get_list(task_board, "Doing")
 
-    for card in doing_list.get_cards():
+    for card in doing_list.list_cards():
       todo_list = get_list(task_board, card.labels[0].name)
       card.change_list(todo_list.id)
 

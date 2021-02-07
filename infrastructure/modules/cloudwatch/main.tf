@@ -8,3 +8,11 @@ resource "aws_cloudwatch_event_target" "_" {
   arn       = var.lambda.arn
   target_id = local.aws_name
 }
+
+resource "aws_lambda_permission" "_" {
+  statement_id = "AllowExecutionFromCloudWatch"
+  action = "lambda:InvokeFunction"
+  function_name = var.lambda.function_name
+  principal = "events.amazonaws.com"
+  source_arn = aws_cloudwatch_event_rule._.arn
+}
