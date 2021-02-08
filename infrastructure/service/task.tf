@@ -16,7 +16,7 @@ module "apigw_task" {
   source    = "../modules/apigw/method"
   apigateway = module.apigateway
   content   = "task"
-  lambda    = module.task_lambda
+  lambda    = module.lambda_task
 }
 
 module "cloudwatch_task" {
@@ -24,7 +24,7 @@ module "cloudwatch_task" {
   aws_name = local.aws_name
   content  = "task"
   cron     = "cron(30 2 ? * MON-FRI *)"
-  lambda   = module.cron_lambda
+  lambda   = module.lambda_cron_lunch_break
 }
 
 module "lambda_cron_lunch_break" {

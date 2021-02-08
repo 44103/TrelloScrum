@@ -17,5 +17,5 @@ module "apigw_story" {
   source    = "../modules/apigw/method"
   apigateway = module.apigateway
   content   = "story"
-  lambda    = module.story_lambda
+  lambda    = module.lambda_story
 }
