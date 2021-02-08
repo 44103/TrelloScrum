@@ -13,11 +13,10 @@ module "task_lambda" {
 }
 
 module "task_apigw" {
-  source    = "../modules/apigw"
-  aws_name  = local.aws_name
+  source    = "../modules/apigw/method"
+  apigateway = module.apigateway
   content   = "task"
   lambda    = module.task_lambda
-  path_part = "prod"
 }
 
 module "task_cloudwatch" {

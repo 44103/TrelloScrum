@@ -7,3 +7,17 @@ module "lambdalayer" {
   source = "../modules/lambdalayer"
   # content = "pippkgs"
 }
+
+module "apigateway" {
+  source = "../modules/apigw"
+  aws_name = local.aws_name
+}
+
+module "apigateway_deployment" {
+  source = "../modules/apigw/deployment"
+  apigateway = module.apigateway
+  depends_on = [
+    module.task_apigw,
+    module.story_apigw
+  ]
+}

@@ -14,9 +14,8 @@ module "story_lambda" {
 }
 
 module "story_apigw" {
-  source    = "../modules/apigw"
-  aws_name  = local.aws_name
+  source    = "../modules/apigw/method"
+  apigateway = module.apigateway
   content   = "story"
   lambda    = module.story_lambda
-  path_part = "prod"
 }
