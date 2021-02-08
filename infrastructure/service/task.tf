@@ -19,15 +19,7 @@ module "apigw_task" {
   lambda    = module.lambda_task
 }
 
-module "cloudwatch_task" {
-  source   = "../modules/cloudwatch"
-  aws_name = local.aws_name
-  content  = "task"
-  cron     = "cron(30 2 ? * MON-FRI *)"
-  lambda   = module.lambda_cron_lunch_break
-}
-
-module "lambda_cron_lunch_break" {
+module "lambda_cron" {
   source   = "../modules/lambda"
   aws_name = local.aws_name
   content  = "cron"
@@ -40,4 +32,20 @@ module "lambda_cron_lunch_break" {
   layers = [
     module.lambdalayer.arn
   ]
+}
+
+module "cloudwatch_task_lunchbreak" {
+  source   = "../modules/cloudwatch"
+  aws_name = local.aws_name
+  content  = "task_lunchbreak"
+  cron     = "cron(30 2 ? * MON-FRI *)"
+  lambda   = module.lambda_cron
+}
+
+module "cloudwatch_task_closed" {
+  source   = "../modules/cloudwatch"
+  aws_name = local.aws_name
+  content  = "task_closed"
+  cron     = "cron(30 7 ? * MON-FRI *)"
+  lambda   = module.lambda_cron
 }
