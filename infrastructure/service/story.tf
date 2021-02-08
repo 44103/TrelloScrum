@@ -1,4 +1,4 @@
-module "story_lambda" {
+module "lambda_story" {
   source   = "../modules/lambda"
   aws_name = local.aws_name
   content  = "story"
@@ -13,7 +13,7 @@ module "story_lambda" {
   ]
 }
 
-module "story_apigw" {
+module "apigw_story" {
   source    = "../modules/apigw/method"
   apigateway = module.apigateway
   content   = "story"

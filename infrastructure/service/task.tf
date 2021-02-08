@@ -1,4 +1,4 @@
-module "task_lambda" {
+module "lambda_task" {
   source   = "../modules/lambda"
   aws_name = local.aws_name
   content  = "task"
@@ -12,14 +12,14 @@ module "task_lambda" {
   ]
 }
 
-module "task_apigw" {
+module "apigw_task" {
   source    = "../modules/apigw/method"
   apigateway = module.apigateway
   content   = "task"
   lambda    = module.task_lambda
 }
 
-module "task_cloudwatch" {
+module "cloudwatch_task" {
   source   = "../modules/cloudwatch"
   aws_name = local.aws_name
   content  = "task"
@@ -27,7 +27,7 @@ module "task_cloudwatch" {
   lambda   = module.cron_lambda
 }
 
-module "cron_lambda" {
+module "lambda_cron_lunch_break" {
   source   = "../modules/lambda"
   aws_name = local.aws_name
   content  = "cron"
