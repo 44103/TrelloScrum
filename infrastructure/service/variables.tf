@@ -11,9 +11,6 @@ variable "prefix" {
 variable "project" {
   description = "プロジェクト名"
 }
-variable "suffix" {
-  description = "リソース名のSuffix"
-}
 
 # API
 variable "trello_base_env" {

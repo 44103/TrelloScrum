@@ -4,9 +4,6 @@ region = "ap-northeast-1"
 # リソース名のPrefix
 prefix = "test"
 
-# リソース名のSuffix
-suffix = ""
-
 # Trello API
 trello_base_env = {
   "trello_api_key" = ""
