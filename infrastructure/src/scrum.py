@@ -65,7 +65,7 @@ class Scrum(sg.Singleton):
       # 中断・完了時に経過時間を記載
       elapsed_time = self.__calc_elapsed_time()
       if "経過" not in message:
-        message += f"\n---\n**経過時間**：{elapsed_time}"
+        message += f"\n\n---\n**経過時間**：{elapsed_time}"
       else:
         message_split = message.split('\n')
         message_split[-1] = f"**経過時間**：{elapsed_time}"
